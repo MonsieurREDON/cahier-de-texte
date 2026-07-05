@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Solution - Analyse rétrograde</title>
+</head>
+<body>
+
+    <h1>Solution du problème d’analyse rétrograde</h1>
+
+    <h2>Étude du fou en C7</h2>
+
+    <p>
+        Le fou en ç7 est un fou de cases noires. Or les pions en é7 et g7 sont sur leurs positions initiales.
+        Cela implique que le fou f8 a été pris et donc ne peut pas être celui situé en ç7.
+    </p>
+
+    <p>
+        Le fou en ç7 est donc un fou issu d’une promotion.
+        Il provient nécessairement d’un pion noir promu sur la dernière rangée blanche.
+        Les cases possibles de promotion sont : a1, c1, e1 ou g1.
+    </p>
+
+    <h2>Élimination des cases de promotion</h2>
+
+    <p>
+        Une promotion en a1 est impossible, car les pions blancs en A2 et B2 bloquent toute avancée de pion noir sur cette colonne.
+    </p>
+
+    <p>
+        Une promotion en ç1 supposerait un pion venant de d2. Dans ce cas, le roi blanc aurait nécessairement "bougé" de é1.
+    </p>
+
+    <p>
+        De manière analogue, la promotion en g1 est impossible.
+    </p>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        Le Roi blanc a nécessairement effectué un déplacement et donc le grand-roque est impossible.
+    </p>
+
+</body>
+</html>
