@@ -64,20 +64,14 @@ button{
 <script>
 
 const san=[
-    "Nf3", Nf6",
+    "Nf3",
+    "Nf6",
     "Nd4",
     "d6",
     "Nc6",
     "Nfd7",
     "Nxb8",
     "Nxb8"
-];
-
-const labels=[
-    "1. Cf3 Cf6",
-    "2. Cd4 d6",
-    "3. Cc6 Cfd7",
-    "4. Cxb8 Cxb8"
 ];
 
 
@@ -98,30 +92,39 @@ let board=Chessboard('board',{
 let idx=0;
 
 
-labels.forEach((m,i)=>{
+// Création des demi-coups
+san.forEach((move,i)=>{
 
-    let li=document.createElement('div');
-    li.textContent=m;
-    li.id='m'+i;
+    let span=document.createElement('span');
 
-    document.getElementById("moves").appendChild(li);
+    span.textContent=(i%2===0 ? (Math.floor(i/2)+1)+". " : "") + move + " ";
+
+    span.id="m"+i;
+
+    document.getElementById("moves").appendChild(span);
 
 });
+
 
 
 function refresh(){
 
     board.position(chess.fen(),true);
 
-    document.querySelectorAll('li')
-    .forEach(li=>li.classList.remove('current'));
+
+    document.querySelectorAll('#moves span')
+    .forEach(span=>span.classList.remove('current'));
+
 
     if(idx>0){
+
         document.getElementById('m'+(idx-1))
         .classList.add('current');
+
     }
 
 }
+
 
 
 function rebuild(n){
@@ -133,14 +136,47 @@ function rebuild(n){
         let move=chess.move(san[i]);
 
         if(move===null){
+
             console.log("Coup impossible :", san[i]);
             break;
+
         }
+
     }
 
     idx=n;
 
     refresh();
+
+}
+
+
+
+function next(){
+
+    if(idx<san.length){
+
+        rebuild(idx+1);
+
+    }
+
+}
+
+
+
+function prev(){
+
+    if(idx>0){
+
+        rebuild(idx-1);
+
+    }
+
+}
+
+
+
+refresh();
 
 }
 
@@ -165,6 +201,15 @@ function prev(){
 
 refresh();
 
+#moves span{
+    display:inline-block;
+    padding:3px;
+}
+
+.current{
+    background:yellow;
+}
+    
 </script>
 
 </body>
