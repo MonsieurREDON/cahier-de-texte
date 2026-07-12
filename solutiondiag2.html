@@ -1,1 +1,212 @@
-<!DOCTYPE html> <html lang="fr"> <head> <meta charset="utf-8"> <title>solution du diagramme 2</title> <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"> <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script> <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script> <style> body{ font-family:Arial; margin:20px; } #wrap{ display:flex; gap:30px; align-items:flex-start; } #board{ width:480px; } .current{ background:yellow; } button{ font-size:18px; padding:8px 16px; margin:5px; } </style> </head> <body> <h1>solution du problème</h1> <div id="wrap"> <div> <div id="board"></div> <button onclick="prev()">◀ Précédent</button> <button onclick="next()">▶ Suivant</button> </div> <div> <div id="moves"></div> </div> </div> <script> const san=[ "Nf3", "Nf6", "Nd4", "d6", "Nc6", "Nfd7", "Nxb8", "Nxb8" ]; const labels=[ "1. Cf3 Cf6", "2. Cd4 d6", "3. Cc6 Cfd7", "4. Cxb8 Cxb8" ]; let chess=new Chess(); let board=Chessboard('board',{ position:'start', showNotation:false, pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png' }); let idx=0; labels.forEach((m,i)=>{ let li=document.createElement('div'); li.textContent=m; li.id='m'+i; document.getElementById("moves").appendChild(li); }); function refresh(){ board.position(chess.fen(),true); document.querySelectorAll('li') .forEach(li=>li.classList.remove('current')); if(idx>0){ document.getElementById('m'+(idx-1)) .classList.add('current'); } } function rebuild(n){ chess=new Chess(); for(let i=0;i<n;i++){ let move=chess.move(san[i]); if(move===null){ console.log("Coup impossible :", san[i]); break; } } idx=n; refresh(); } function next(){ if(idx<san.length){ rebuild(idx+1); } } function prev(){ if(idx>0){ rebuild(idx-1); } } refresh(); </script> </body> </html>
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>solution du diagramme 2</title>
+
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<style>
+body{
+    font-family:Arial;
+    margin:20px;
+}
+
+#wrap{
+    display:flex;
+    gap:30px;
+    align-items:flex-start;
+}
+
+#board{
+    width:480px;
+}
+
+.current{
+    background:yellow;
+}
+
+button{
+    font-size:18px;
+    padding:8px 16px;
+    margin:5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Solution du problème</h1>
+
+<div id="wrap">
+
+<div>
+    <div id="board"></div>
+
+    <button onclick="prev()">◀ Précédent</button>
+    <button onclick="next()">▶ Suivant</button>
+</div>
+
+<div>
+    <div id="moves"></div>
+</div>
+
+</div>
+
+
+<script>
+
+// Liste des demi-coups pour chess.js
+const san=[
+    "Nf3",
+    "Nf6",
+    "Nd4",
+    "d6",
+    "Nc6",
+    "Nfd7",
+    "Nxb8",
+    "Nxb8"
+];
+
+
+// Affichage conservé sous forme de coups complets
+const labels=[
+    "1. Cf3 Cf6",
+    "2. Cd4 d6",
+    "3. Cc6 Cfd7",
+    "4. Cxb8 Cxb8"
+];
+
+
+let chess=new Chess();
+
+let board=Chessboard('board',{
+
+    position:'start',
+
+    showNotation:false,
+
+    pieceTheme:
+    'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+
+});
+
+
+let idx=0;
+
+
+// Création de l'affichage des coups
+labels.forEach((m,i)=>{
+
+    let div=document.createElement('div');
+    div.id='m'+i;
+
+    if(i===0){
+        div.innerHTML='<span id="c0">1. Cf3</span> <span id="c1">Cf6</span>';
+    }
+
+    if(i===1){
+        div.innerHTML='<span id="c2">2. Cd4</span> <span id="c3">d6</span>';
+    }
+
+    if(i===2){
+        div.innerHTML='<span id="c4">3. Cc6</span> <span id="c5">Cfd7</span>';
+    }
+
+    if(i===3){
+        div.innerHTML='<span id="c6">4. Cxb8</span> <span id="c7">Cxb8</span>';
+    }
+
+    document.getElementById("moves").appendChild(div);
+
+});
+
+
+// Mise à jour de l'affichage
+function refresh(){
+
+    board.position(chess.fen(),true);
+
+
+    // suppression de l'ancien jaune
+    document.querySelectorAll('#moves span')
+    .forEach(span=>span.classList.remove('current'));
+
+
+    // ajout du jaune sur le demi-coup actuel
+    if(idx>0){
+
+        document.getElementById('c'+(idx-1))
+        .classList.add('current');
+
+    }
+
+}
+
+
+// Reconstruction de la position
+function rebuild(n){
+
+    chess=new Chess();
+
+
+    for(let i=0;i<n;i++){
+
+        let move=chess.move(san[i]);
+
+        if(move===null){
+
+            console.log("Coup impossible :", san[i]);
+            break;
+
+        }
+
+    }
+
+
+    idx=n;
+
+    refresh();
+
+}
+
+
+// Bouton suivant
+function next(){
+
+    if(idx<san.length){
+
+        rebuild(idx+1);
+
+    }
+
+}
+
+
+// Bouton précédent
+function prev(){
+
+    if(idx>0){
+
+        rebuild(idx-1);
+
+    }
+
+}
+
+
+refresh();
+
+</script>
+
+</body>
+</html>
+```
