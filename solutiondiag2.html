@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="fr"><head>
+<html lang="fr">
+<head>
 <meta charset="utf-8">
 <title>Défilement de partie</title>
 
@@ -10,38 +11,148 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
 
 <style>
-body{font-family:Arial;margin:20px}
-#wrap{display:flex;gap:30px;align-items:flex-start}
-#board{width:480px}
-.current{background:yellow}
-button{font-size:18px;padding:8px 16px;margin:5px}
-</style></head>
+body{
+    font-family:Arial;
+    margin:20px
+}
+
+#wrap{
+    display:flex;
+    gap:30px;
+    align-items:flex-start
+}
+
+#board{
+    width:480px
+}
+
+.current{
+    background:yellow
+}
+
+button{
+    font-size:18px;
+    padding:8px 16px;
+    margin:5px
+}
+</style>
+
+</head>
+
 <body>
+
 <h1>Animation d'une partie</h1>
+
 <div id="wrap">
-<div><div id="board"></div>
-<button onclick="prev()">◀ Précédent</button>
-<button onclick="next()">▶ Suivant</button></div>
-<div><ol id="moves"></ol></div></div>
+
+<div>
+    <div id="board"></div>
+
+    <button onclick="prev()">◀ Précédent</button>
+    <button onclick="next()">▶ Suivant</button>
+</div>
+
+<div>
+    <ol id="moves"></ol>
+</div>
+
+</div>
+
+
 <script>
-const san=["Nf3","Nf6","Nd4","d6","Nc6","Nfd7","Nxb8","Nxb8"];
-const labels=["1. Cf3","... Cf6","2. Cd4","... d6","3. Cc6","... Cfd7","4. Cxb8","... Cxb8"];
+
+const san=[
+    "Nf3",
+    "Nf6",
+    "Nd4",
+    "d6"
+];
+
+const labels=[
+    "1. Cf3",
+    "... Cf6",
+    "2. Cd4",
+    "... d6"
+];
+
+
 let chess=new Chess();
-let board=Chessboard('board',{position:'start'});
+
+let board=Chessboard('board',{
+
+    position:'start',
+
+    showNotation:false,
+
+    pieceTheme:
+    'https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/img/chesspieces/wikipedia/{piece}.png'
+
+});
+
+
 let idx=0;
-labels.forEach((m,i)=>{let li=document.createElement('li');li.id='m'+i;document.getElementById("moves").appendChild(li);});
+
+
+labels.forEach((m,i)=>{
+
+    let li=document.createElement('li');
+    li.textContent=m;
+    li.id='m'+i;
+
+    document.getElementById("moves").appendChild(li);
+
+});
+
+
 function refresh(){
- board.position(chess.fen(),true);
- document.querySelectorAll('li').forEach(li=>li.classList.remove('current'));
- if(idx>0)document.getElementById('m'+(idx-1)).classList.add('current');
+
+    board.position(chess.fen(),true);
+
+    document.querySelectorAll('li')
+    .forEach(li=>li.classList.remove('current'));
+
+    if(idx>0){
+        document.getElementById('m'+(idx-1))
+        .classList.add('current');
+    }
+
 }
+
+
 function rebuild(n){
- chess=new Chess();
- for(let i=0;i<n;i++) chess.move(san[i]);
- idx=n; refresh();
+
+    chess=new Chess();
+
+    for(let i=0;i<n;i++){
+        chess.move(san[i]);
+    }
+
+    idx=n;
+
+    refresh();
+
 }
-function next(){if(idx<san.length)rebuild(idx+1);}
-function prev(){if(idx>0)rebuild(idx-1);}
+
+
+function next(){
+
+    if(idx<san.length)
+        rebuild(idx+1);
+
+}
+
+
+function prev(){
+
+    if(idx>0)
+        rebuild(idx-1);
+
+}
+
+
 refresh();
+
 </script>
-</body></html>
+
+</body>
+</html>
