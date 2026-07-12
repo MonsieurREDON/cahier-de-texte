@@ -1,50 +1,43 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Solution</title>
-</head>
+<html lang="fr"><head><meta charset="utf-8">
+<title>Défilement de partie</title>
+<link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/www/css/chessboard-1.0.0.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/chess.js@1.0.0/dist/chess.min.js"></script>
+<script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
+<style>
+body{font-family:Arial;margin:20px}
+#wrap{display:flex;gap:30px;align-items:flex-start}
+#board{width:480px}
+.current{background:yellow}
+button{font-size:18px;padding:8px 16px;margin:5px}
+</style></head>
 <body>
-
-    <h1><u></u>Solution du problème</u></h1>
-
-    <img src="echecs/diagramme1.png" alt="diagramme 1" width="300">
-
-    <h2>Étude du fou en C7</h2>
-
-    <p>
-        Le fou en ç7 est un fou de cases noires. Or les pions en é7 et g7 sont sur leur position initiale.
-        Cela implique que le fou f8 a été pris et donc ne peut pas être celui situé en ç7.
-    </p>
-
-    <p>
-        Le fou en ç7 est donc un fou issu d’une promotion.
-        Il provient nécessairement d’un pion noir promu sur la dernière rangée blanche.
-        Les cases possibles de promotion sont : a1, c1, e1 ou g1.
-    </p>
-
-    <h2>Élimination des cases de promotion</h2>
-
-    <p>
-        Une promotion en a1 est impossible, car les pions blancs en a2 et b2 la rende impossible.
-    </p>
-    <p>
-        Une promotion en é1 signifierait que le Roi blanc a quitté é1 pour ensuite y revenir.
-    </p>
-<p> Le Fou ç7 vient donc de la promotion d'un pion en ç1 ou en g1</p>
-    <p>
-        Une promotion en ç1 supposerait un pion venant de d2. Dans ce cas, le roi blanc aurait nécessairement "bougé" de é1.
-    </p>
-
-    <p>
-        De manière analogue, la promotion en g1 implique le déplacement du Roi blanc de sa case initiale.
-    </p>
-
-    <h2>Conclusion</h2>
-
-    <p>
-        Le grand-roque est impossible.
-    </p>
-
-</body>
-</html>
+<h1>Animation d'une partie</h1>
+<div id="wrap">
+<div><div id="board"></div>
+<button onclick="prev()">◀ Précédent</button>
+<button onclick="next()">▶ Suivant</button></div>
+<div><ol id="moves"></ol></div></div>
+<script>
+const san=["Nf3","Nf6","Nd4","d6","Nc6","Nfd7","Nxb8","Nxb8"];
+const labels=["1. Cf3","... Cf6","2. Cd4","... d6","3. Cc6","... Cfd7","4. Cxb8","... Cxb8"];
+let chess=new Chess();
+let board=Chessboard('board',{position:'start'});
+let idx=0;
+labels.forEach((m,i)=>{let li=document.createElement('li');li.id='m'+i;li.textContent=m;moves.appendChild(li);});
+function refresh(){
+ board.position(chess.fen(),true);
+ document.querySelectorAll('li').forEach(li=>li.classList.remove('current'));
+ if(idx>0)document.getElementById('m'+(idx-1)).classList.add('current');
+}
+function rebuild(n){
+ chess=new Chess();
+ for(let i=0;i<n;i++) chess.move(san[i]);
+ idx=n; refresh();
+}
+function next(){if(idx<san.length)rebuild(idx+1);}
+function prev(){if(idx>0)rebuild(idx-1);}
+refresh();
+</script>
+</body></html>
