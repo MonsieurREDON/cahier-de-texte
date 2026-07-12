@@ -137,8 +137,29 @@ function refresh(){
 
 
     // suppression de l'ancien jaune
+    function refresh(){
+
+    board.position(chess.fen(),true);
+
+
+    // On enlève seulement le jaune si on revient en arrière
     document.querySelectorAll('#moves span')
-    .forEach(span=>span.classList.remove('current'));
+    .forEach((span,i)=>{
+        if(i >= idx){
+            span.classList.remove('current');
+        }
+    });
+
+
+    // On garde tous les demi-coups déjà joués en jaune
+    for(let i=0;i<idx;i++){
+
+        document.getElementById('c'+i)
+        .classList.add('current');
+
+    }
+
+}
 
 
     // ajout du jaune sur le demi-coup actuel
