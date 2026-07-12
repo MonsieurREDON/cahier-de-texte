@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,27 +16,27 @@
 <style>
 body{
     font-family:Arial;
-    margin:20px
+    margin:20px;
 }
 
 #wrap{
     display:flex;
     gap:30px;
-    align-items:flex-start
+    align-items:flex-start;
 }
 
 #board{
-    width:480px
+    width:480px;
 }
 
 .current{
-    background:yellow
+    background:yellow;
 }
 
 button{
     font-size:18px;
     padding:8px 16px;
-    margin:5px
+    margin:5px;
 }
 </style>
 
@@ -70,15 +71,19 @@ const san=[
     "d6",
     "Nc6",
     "Nfd7",
-    "Nb8",
-    "Nb8"
+    "Nxb8",
+    "Nxb8"
 ];
 
 const labels=[
     "1. Cf3",
     "... Cf6",
     "2. Cd4",
-    "... d6"
+    "... d6",
+    "3. Cc6",
+    "... Cfd7",
+    "4. Cxb8",
+    "... Cxb8"
 ];
 
 
@@ -91,7 +96,7 @@ let board=Chessboard('board',{
     showNotation:false,
 
     pieceTheme:
-'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+    'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 
 });
 
@@ -130,7 +135,13 @@ function rebuild(n){
     chess=new Chess();
 
     for(let i=0;i<n;i++){
-        chess.move(san[i]);
+
+        let move=chess.move(san[i]);
+
+        if(move===null){
+            console.log("Coup impossible :", san[i]);
+            break;
+        }
     }
 
     idx=n;
@@ -142,16 +153,18 @@ function rebuild(n){
 
 function next(){
 
-    if(idx<san.length)
+    if(idx<san.length){
         rebuild(idx+1);
+    }
 
 }
 
 
 function prev(){
 
-    if(idx>0)
+    if(idx>0){
         rebuild(idx-1);
+    }
 
 }
 
@@ -162,3 +175,5 @@ refresh();
 
 </body>
 </html>
+```
+
