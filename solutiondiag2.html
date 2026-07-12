@@ -26,7 +26,7 @@ const labels=["1. Cf3","... Cf6","2. Cd4","... d6","3. Cc6","... Cfd7","4. Cxb8"
 let chess=new Chess();
 let board=Chessboard('board',{position:'start'});
 let idx=0;
-labels.forEach((m,i)=>{let li=document.createElement('li');li.id='m'+i;li.textContent=m;moves.appendChild(li);});
+labels.forEach((m,i)=>{let li=document.createElement('li');li.id='m'+i;document.getElementById("moves").appendChild(li);});
 function refresh(){
  board.position(chess.fen(),true);
  document.querySelectorAll('li').forEach(li=>li.classList.remove('current'));
